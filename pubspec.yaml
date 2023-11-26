@@ -1,7 +1,7 @@
 name: tree_traversal
 description: tree_traversal
-version: 0.0.1
-# repository: https://github.com/my_org/my_repo
+version: 0.1.0
+repository: https://github.com/mcmah309/tree_traversal
 
 environment:
   sdk: ^3.2.0
