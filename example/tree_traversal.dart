@@ -27,12 +27,10 @@ void main(){
   List<String> values = [];
   treeTraversal.preOrderIterable(rootNode).forEach((node) => values.add(node.value));
   expect(values, equals(["A", "B", "D", "E", "C", "F", "G"]));
-
   // Post-order traversal
   values = [];
   treeTraversal.postOrderIterable(rootNode).forEach((node) => values.add(node.value));
   expect(values, equals(["D", "E", "B", "F", "G", "C", "A"]));
-
   // Level-order traversal
   values = [];
   treeTraversal.levelOrderIterable(rootNode).forEach((node) => values.add(node.value));
