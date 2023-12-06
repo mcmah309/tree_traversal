@@ -13,11 +13,13 @@ class TreeTraversal<T> {
   /// {@template preOrderIterable}
   /// In pre-order traversal, you visit the current node first, then recursively traverse the left subtree, and finally recursively traverse the right subtree.
   /// Pre-order traversal is commonly used to create a copy of the tree or to serialize the tree structure.
+  /// ```
   ///           A
   ///         /   \
   ///        B     C
   ///       / \   / \
   ///      D   E F   G
+  /// ```
   /// Pre-order traversal: A, B, D, E, C, F, G
   /// {@endtemplate}
   Iterable<T> preOrderIterable(T node) sync* {
@@ -30,11 +32,13 @@ class TreeTraversal<T> {
   /// {@template postOrderIterable}
   /// In post-order traversal, you recursively traverse the left subtree first, then recursively traverse the right subtree, and finally visit the current node.
   /// Post-order traversal is commonly used to delete the tree or to perform some calculations involving the descendants of a node before visiting the node itself.
+  /// ```
   ///           A
   ///         /   \
   ///        B     C
   ///       / \   / \
   ///      D   E F   G
+  /// ```
   /// Post-order traversal: D, E, B, F, G, C, A
   /// {@endtemplate}
   Iterable<T> postOrderIterable(T node) sync* {
@@ -51,11 +55,13 @@ class TreeTraversal<T> {
   /// {@template levelOrderIterable}
   /// In level-order traversal, you visit the nodes level by level, from left to right.
   /// Level-order traversal is useful for exploring or searching a tree breadth-first, and it can be helpful in constructing the tree from a list of nodes.
+  /// ```
   ///           A
   ///         /   \
   ///        B     C
   ///       / \   / \
   ///      D   E F   G
+  /// ```
   /// Level-order traversal: A, B, C, D, E, F, G
   /// {@endtemplate}
   Iterable<T> levelOrderIterable(T node) sync* {
@@ -84,11 +90,13 @@ class ParentedTreeTraversal<T extends Object> extends TreeTraversal<T> {
 
   /// {@template reverseOrderIterable}
   /// Reverse traversal, you visit this node, then your previous siblings, then your parent, then your parents previous siblings and so on.
+  /// ```
   ///           A
   ///         /   \
   ///        B     C
   ///       / \   / \
   ///      D   E F   G
+  /// ```
   /// Reverse traversal starting at G: G, F, C, B, A
   /// {@endtemplate}
   Iterable<T> reverseOrderIterable(T node) sync* {
