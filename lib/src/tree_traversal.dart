@@ -118,8 +118,8 @@ class ParentedTreeTraversal<T extends Object> extends TreeTraversal<T> {
   //************************************************************************//
 
   /// {@template postOrderContinuationIterable}
-  /// Performs a post-order traversal as continuing from the current node. That is, the tree the starting node
-  /// existing in, is also considered as well
+  /// Performs a post-order traversal as continuing from the current node. That is, if post-order traversal was
+  /// already taking place in the current tree and the provided node was just encountered
   /// ```
   ///           A
   ///         /   \
@@ -151,5 +151,44 @@ class ParentedTreeTraversal<T extends Object> extends TreeTraversal<T> {
       yield* _postOrderWithSkipChildren(childNode, 0);
     }
     yield node;
+  }
+
+  //************************************************************************//
+
+  /// {@template postOrderContinuationIterable}
+  /// Performs a pre-order traversal as continuing from the current node. That is, if pre-order traversal was
+  /// already taking place in the current tree and the provided node was just encountered.
+  /// ```
+  ///           A
+  ///         /   \
+  ///        B     C
+  ///       / \   / \
+  ///      D   E F   G
+  /// ```
+  /// Post Order Continuation traversal starting at C: C, F, G
+  /// {@endtemplate}
+  Iterable<T> preOrderContinuationIterable(T node) sync* {
+    yield node;
+    yield* _preOrderContinuationHelper(node, 0);
+  }
+
+  Iterable<T> _preOrderContinuationHelper(T node, int skip) sync* {
+    yield* _preOrderWithSkipChildren(node, skip);
+
+    final T? parent = _getParentFn(node);
+    // has no parent, end generation
+    if (parent == null) {
+      return;
+    } else {
+      int parentShouldSkip = _getChildsIndexFn(parent, node) + 1;
+      yield* _preOrderContinuationHelper(parent, parentShouldSkip);
+    }
+  }
+
+  Iterable<T> _preOrderWithSkipChildren(T node, int skip) sync* {
+    for (T childNode in _getChildrenFn(node).skip(skip)) {
+      yield childNode;
+      yield* _preOrderWithSkipChildren(childNode, 0);
+    }
   }
 }

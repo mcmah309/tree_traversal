@@ -68,7 +68,7 @@ void main() {
 
     test("ParentedTreeTraversal", () {
       final treeTraversal = ParentedTreeTraversal<TestNode>((node) => node.children, (node) => node.parent,
-              (node, i) => node.children[i], (parent, child) => parent.getChildsIndex(child));
+          (node, i) => node.children[i], (parent, child) => parent.getChildsIndex(child));
 
       // Pre-order traversal
       List<String> values = [];
@@ -104,6 +104,21 @@ void main() {
       values = [];
       treeTraversal.postOrderContinuationIterable(nodeE).forEach((node) => values.add(node.value));
       expect(values, equals(["E", "B", "F", "G", "C", "A"]));
+
+      // Pre-order continuation traversal 1
+      values = [];
+      treeTraversal.preOrderContinuationIterable(nodeC).forEach((node) => values.add(node.value));
+      expect(values, equals(["C", "F", "G"]));
+
+      // Pre-order continuation traversal 2
+      values = [];
+      treeTraversal.preOrderContinuationIterable(nodeB).forEach((node) => values.add(node.value));
+      expect(values, equals(["B", "D", "E", "C", "F", "G"]));
+
+      // Pre-order continuation traversal 3
+      values = [];
+      treeTraversal.preOrderContinuationIterable(nodeE).forEach((node) => values.add(node.value));
+      expect(values, equals(["E", "C", "F", "G"]));
     });
   });
 }
