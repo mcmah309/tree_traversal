@@ -1,6 +1,6 @@
 import 'dart:collection';
 
-/// Depth first and breadth first traversal on a generic type [T]
+/// Depth first and breadth first traversals on a generic type [T]
 class TreeTraversal<T> {
   final Iterable<T> Function(T) _getChildrenFn;
 
@@ -76,7 +76,7 @@ class TreeTraversal<T> {
   }
 }
 
-/// Traversals for going up a tree that may have a generic parent [T]
+/// Tree Traversals  where [T] is aware of it's parent.
 class ParentedTreeTraversal<T extends Object> extends TreeTraversal<T> {
   final T? Function(T) _getParentFn;
 
@@ -165,7 +165,7 @@ class ParentedTreeTraversal<T extends Object> extends TreeTraversal<T> {
   ///       / \   / \
   ///      D   E F   G
   /// ```
-  /// Post Order Continuation traversal starting at C: C, F, G
+  /// Pre Order Continuation traversal starting at E: E, C, F, G
   /// {@endtemplate}
   Iterable<T> preOrderContinuationIterable(T node) sync* {
     yield node;
