@@ -48,7 +48,7 @@ void main() {
     });
 
     test("TreeTraversal", () {
-      final treeTraversal = TreeTraversal<TestNode>((node) => node.children);
+      final treeTraversal = TreeTraversal<TestNode>(getChildren: (node) => node.children);
 
       // Pre-order traversal
       List<String> values = [];
@@ -67,8 +67,11 @@ void main() {
     });
 
     test("ParentedTreeTraversal", () {
-      final treeTraversal = ParentedTreeTraversal<TestNode>((node) => node.children, (node) => node.parent,
-          (node, i) => node.children[i], (parent, child) => parent.getChildsIndex(child));
+      final treeTraversal = ParentedTreeTraversal<TestNode>(
+          getChildren: (node) => node.children,
+          getParent: (node) => node.parent,
+          getChildAtIndex: (node, i) => node.children[i],
+          getChildsIndex: (parent, child) => parent.getChildsIndex(child));
 
       // Pre-order traversal
       List<String> values = [];

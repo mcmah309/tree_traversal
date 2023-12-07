@@ -21,7 +21,7 @@ void main(){
   nodeC.children.add(nodeG);
   nodeF.parent = nodeC;
   nodeG.parent = nodeC;
-  final treeTraversal = TreeTraversal<TestNode>((node) => node.children);
+  final treeTraversal = TreeTraversal<TestNode>(getChildren: (node) => node.children);
 
   // Pre-order traversal
   List<String> values = [];

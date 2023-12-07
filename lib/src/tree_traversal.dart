@@ -4,7 +4,7 @@ import 'dart:collection';
 class TreeTraversal<T> {
   final Iterable<T> Function(T) _getChildrenFn;
 
-  const TreeTraversal(this._getChildrenFn);
+  const TreeTraversal({required Iterable<T> Function(T) getChildren}) : _getChildrenFn = getChildren;
 
   //************************************************************************//
   //  Depth First
@@ -86,7 +86,15 @@ class ParentedTreeTraversal<T extends Object> extends TreeTraversal<T> {
   /// Takes the parent and the child, and returns the index of the child in the parent.
   final int Function(T, T) _getChildsIndexFn;
 
-  const ParentedTreeTraversal(super.getChildrenFn, this._getParentFn, this._getChildAtIndexFn, this._getChildsIndexFn);
+  const ParentedTreeTraversal(
+      {required Iterable<T> Function(T) getChildren,
+      required T? Function(T) getParent,
+      required T Function(T, int) getChildAtIndex,
+      required int Function(T, T) getChildsIndex})
+      : _getParentFn = getParent,
+        _getChildAtIndexFn = getChildAtIndex,
+        _getChildsIndexFn = getChildsIndex,
+        super(getChildren: getChildren);
 
   /// {@template reverseOrderIterable}
   /// Reverse traversal, you visit this node, then your previous siblings, then your parent, then your parents previous siblings and so on.

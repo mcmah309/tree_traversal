@@ -7,7 +7,7 @@ abstract interface class Childed<T extends Childed<T>> {
 }
 
 mixin Traversable<T extends Childed<T>> on Childed<T> {
-  final TreeTraversal<Childed<T>> _treeTraversal = TreeTraversal((e) => e.children);
+  final TreeTraversal<Childed<T>> _treeTraversal = TreeTraversal(getChildren: (e) => e.children);
 
   Iterable<T> levelOrderIterable() {
     return _treeTraversal.levelOrderIterable(this).cast<T>();
