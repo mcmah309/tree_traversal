@@ -78,15 +78,15 @@ class TreeTraversal<T> {
 
 /// Traversals for going up a tree that may have a generic parent [T]
 class ParentedTreeTraversal<T extends Object> extends TreeTraversal<T> {
-  final T? Function(T) getParentFn;
+  final T? Function(T) _getParentFn;
 
   /// Takes the node and index, and returns the child of the node at that index.
-  final T Function(T, int) getChildAtIndexFn;
+  final T Function(T, int) _getChildAtIndexFn;
 
   /// Takes the parent and the child, and returns the index of the child in the parent.
-  final int Function(T, T) getChildsIndexFn;
+  final int Function(T, T) _getChildsIndexFn;
 
-  const ParentedTreeTraversal(super.getChildrenFn, this.getParentFn, this.getChildAtIndexFn, this.getChildsIndexFn);
+  const ParentedTreeTraversal(super.getChildrenFn, this._getParentFn, this._getChildAtIndexFn, this._getChildsIndexFn);
 
   /// {@template reverseOrderIterable}
   /// Reverse traversal, you visit this node, then your previous siblings, then your parent, then your parents previous siblings and so on.
@@ -101,11 +101,11 @@ class ParentedTreeTraversal<T extends Object> extends TreeTraversal<T> {
   /// {@endtemplate}
   Iterable<T> reverseOrderIterable(T node) sync* {
     while (true) {
-      T? parent = getParentFn(node);
+      T? parent = _getParentFn(node);
       if (parent != null) {
-        int indexInParent = getChildsIndexFn(parent, node);
+        int indexInParent = _getChildsIndexFn(parent, node);
         for (int i = indexInParent; i >= 0; i--) {
-          yield getChildAtIndexFn(parent, i);
+          yield _getChildAtIndexFn(parent, i);
         }
         node = parent;
       } else {
@@ -113,5 +113,43 @@ class ParentedTreeTraversal<T extends Object> extends TreeTraversal<T> {
         break;
       }
     }
+  }
+
+  //************************************************************************//
+
+  /// {@template postOrderContinuationIterable}
+  /// Performs a post-order traversal as continuing from the current node. That is, the tree the starting node
+  /// existing in, is also considered as well
+  /// ```
+  ///           A
+  ///         /   \
+  ///        B     C
+  ///       / \   / \
+  ///      D   E F   G
+  /// ```
+  /// Post Order Continuation traversal starting at C: F, G, C, A
+  /// {@endtemplate}
+  Iterable<T> postOrderContinuationIterable(T node) sync* {
+    yield* _postOrderContinuationHelper(node, 0);
+  }
+
+  Iterable<T> _postOrderContinuationHelper(T node, int skip) sync* {
+    yield* _postOrderWithSkipChildren(node, skip);
+
+    final T? parent = _getParentFn(node);
+    // has no parent, end generation
+    if (parent == null) {
+      return;
+    } else {
+      int parentShouldSkip = _getChildsIndexFn(parent, node) + 1;
+      yield* _postOrderContinuationHelper(parent, parentShouldSkip);
+    }
+  }
+
+  Iterable<T> _postOrderWithSkipChildren(T node, int skip) sync* {
+    for (T childNode in _getChildrenFn(node).skip(skip)) {
+      yield* _postOrderWithSkipChildren(childNode, 0);
+    }
+    yield node;
   }
 }

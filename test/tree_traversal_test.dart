@@ -89,6 +89,21 @@ void main() {
       values = [];
       treeTraversal.reverseOrderIterable(nodeG).forEach((node) => values.add(node.value));
       expect(values, equals(["G", "F", "C", "B", "A"]));
+
+      // Post-order continuation traversal 1
+      values = [];
+      treeTraversal.postOrderContinuationIterable(nodeC).forEach((node) => values.add(node.value));
+      expect(values, equals(["F", "G", "C", "A"]));
+
+      // Post-order continuation traversal 2
+      values = [];
+      treeTraversal.postOrderContinuationIterable(nodeB).forEach((node) => values.add(node.value));
+      expect(values, equals(["D", "E", "B", "F", "G", "C", "A"]));
+
+      // Post-order continuation traversal 3
+      values = [];
+      treeTraversal.postOrderContinuationIterable(nodeE).forEach((node) => values.add(node.value));
+      expect(values, equals(["E", "B", "F", "G", "C", "A"]));
     });
   });
 }
