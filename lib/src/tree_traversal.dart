@@ -1,6 +1,7 @@
 import 'dart:collection';
 
-/// Depth first and breadth first traversals on a generic type [T]
+/// Tree Traversals where [T] is aware of it's children. This allows for various traversals that involve moving down the tree.
+/// Down: [levelOrderIterable], [postOrderIterable], [preOrderIterable].
 class TreeTraversal<T> {
   final Iterable<T> Function(T node) _getChildrenFn;
 
@@ -11,8 +12,7 @@ class TreeTraversal<T> {
   //************************************************************************//
 
   /// {@template preOrderIterable}
-  /// In pre-order traversal, you visit the current node first, then recursively traverse the left subtree, and finally recursively traverse the right subtree.
-  /// Pre-order traversal is commonly used to create a copy of the tree or to serialize the tree structure.
+  /// In pre-order traversal, the current node is visited first, then the left subtree is recursively traversed, and finally the right subtree is recursively traversed.
   /// ```
   ///           A
   ///         /   \
@@ -30,8 +30,7 @@ class TreeTraversal<T> {
   }
 
   /// {@template postOrderIterable}
-  /// In post-order traversal, you recursively traverse the left subtree first, then recursively traverse the right subtree, and finally visit the current node.
-  /// Post-order traversal is commonly used to delete the tree or to perform some calculations involving the descendants of a node before visiting the node itself.
+  /// In post-order traversal, the left subtree is recursively traversed, then the right subtree is recursively traversed, and finally the current node is visited.
   /// ```
   ///           A
   ///         /   \
@@ -53,8 +52,7 @@ class TreeTraversal<T> {
   //************************************************************************//
 
   /// {@template levelOrderIterable}
-  /// In level-order traversal, you visit the nodes level by level, from left to right.
-  /// Level-order traversal is useful for exploring or searching a tree breadth-first, and it can be helpful in constructing the tree from a list of nodes.
+  /// In level-order traversal, nodes are visited level by level, from left to right.
   /// ```
   ///           A
   ///         /   \
@@ -76,7 +74,9 @@ class TreeTraversal<T> {
   }
 }
 
-/// Tree Traversals  where [T] is aware of it's parent.
+/// Tree Traversals where [T] is aware of it's child and parent. This allows for various traversals that involve moving up and down the tree.
+/// Down: [levelOrderIterable], [postOrderIterable], [preOrderIterable].
+/// Up and Down: [reverseOrderIterable], [postOrderContinuationIterable], [preOrderContinuationIterable].
 class ParentedTreeTraversal<T extends Object> extends TreeTraversal<T> {
   final T? Function(T node) _getParentFn;
 
@@ -97,7 +97,7 @@ class ParentedTreeTraversal<T extends Object> extends TreeTraversal<T> {
         super(getChildren: getChildren);
 
   /// {@template reverseOrderIterable}
-  /// Reverse traversal, you visit this node, then your previous siblings, then your parent, then your parents previous siblings and so on.
+  /// In Reverse traversal, the current node is first visited, then the current nodes previous siblings, then its parent, then its parents previous siblings and so on.
   /// ```
   ///           A
   ///         /   \
