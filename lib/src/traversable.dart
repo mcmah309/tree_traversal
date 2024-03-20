@@ -36,7 +36,7 @@ abstract class Parented<T extends Parented<T>> implements Childed<T> {
 }
 
 /// Tree traversal methods for a class class that has a parent and children.
-mixin ParentedTreeTraversable<T extends Parented<T>> implements Parented<T>, TreeTraversable<T> {
+mixin ParentedTreeTraversable<T extends Parented<T>> on Parented<T> {
   @override
   final ParentedTreeTraversal<Parented<T>> _treeTraversal = ParentedTreeTraversal(
       getChildren: (e) => e.children,
@@ -44,17 +44,14 @@ mixin ParentedTreeTraversable<T extends Parented<T>> implements Parented<T>, Tre
       getChildAtIndex: (e, i) => e[i],
       getChildsIndex: (parent, child) => parent.indexOf(child as T));
 
-  @override
   Iterable<T> levelOrderIterable() {
     return _treeTraversal.levelOrderIterable(this).cast<T>();
   }
 
-  @override
   Iterable<T> postOrderIterable() {
     return _treeTraversal.postOrderIterable(this).cast<T>();
   }
 
-  @override
   Iterable<T> preOrderIterable() {
     return _treeTraversal.preOrderIterable(this).cast<T>();
   }

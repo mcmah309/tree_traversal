@@ -2,9 +2,9 @@ import 'dart:collection';
 
 /// Depth first and breadth first traversals on a generic type [T]
 class TreeTraversal<T> {
-  final Iterable<T> Function(T) _getChildrenFn;
+  final Iterable<T> Function(T node) _getChildrenFn;
 
-  const TreeTraversal({required Iterable<T> Function(T) getChildren}) : _getChildrenFn = getChildren;
+  const TreeTraversal({required Iterable<T> Function(T node) getChildren}) : _getChildrenFn = getChildren;
 
   //************************************************************************//
   //  Depth First
@@ -78,19 +78,19 @@ class TreeTraversal<T> {
 
 /// Tree Traversals  where [T] is aware of it's parent.
 class ParentedTreeTraversal<T extends Object> extends TreeTraversal<T> {
-  final T? Function(T) _getParentFn;
+  final T? Function(T node) _getParentFn;
 
   /// Takes the node and index, and returns the child of the node at that index.
-  final T Function(T, int) _getChildAtIndexFn;
+  final T Function(T node, int index) _getChildAtIndexFn;
 
-  /// Takes the parent and the child, and returns the index of the child in the parent.
-  final int Function(T, T) _getChildsIndexFn;
+  /// Takes a node and a child of that node, and returns the index of the child in the node.
+  final int Function(T node, T child) _getChildsIndexFn;
 
   const ParentedTreeTraversal(
       {required Iterable<T> Function(T) getChildren,
-      required T? Function(T) getParent,
-      required T Function(T, int) getChildAtIndex,
-      required int Function(T, T) getChildsIndex})
+      required T? Function(T node) getParent,
+      required T Function(T node, int index) getChildAtIndex,
+      required int Function(T node, T child) getChildsIndex})
       : _getParentFn = getParent,
         _getChildAtIndexFn = getChildAtIndex,
         _getChildsIndexFn = getChildsIndex,
